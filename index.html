@@ -1,1 +1,44 @@
-你好
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			div{
+				width: 10px;
+				height: 10px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				background: green;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			window.onload=function(){
+				var str='';
+				for(var i=0;i<50;i++){
+					str+='<div style="opacity:0">'+i+'</div>';
+				}
+				
+				document.body.innerHTML=str;
+				
+				var divs=document.querySelectorAll("div");
+				
+				document.onmousemove=function(ev){
+					for(var i=divs.length-1;i>0;i--){
+						divs[i].style.left=divs[i-1].style.left;
+						divs[i].style.top=divs[i-1].style.top;
+						divs[i].style.opacity=divs[i-1].style.opacity;
+					}
+					
+					divs[0].style.left=ev.clientX+'px';
+					divs[0].style.top=ev.clientY+'px';
+					divs[0].style.opacity=1;
+					//这里的艺术在于顺序的问题，和右边的值赋给左边值
+				};
+			};
+		</script>
+	</body>
+</html>
