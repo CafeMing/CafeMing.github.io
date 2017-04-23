@@ -3,80 +3,119 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		
 		<style>
-			div{
-				width:100px;
-				height:100px;
-				background:blue;
+			body div img {
+				padding:0;
+				margin:0;
+			}
+			#box{
+				width:1059px;
+				height:200px;
+				border:2px solid black;
+				position:relative;
+				overflow:hidden;
+			}
+			#first{
 				position:absolute;
-				left:0;
-				top:0;
+				z-index: 1;
+			}
+			.one{
+				width:553px;
+				height:200px;
+				
+			}
+			.one img{
+				width:250px;
+				height:200px;
+				border-right:3px solid black;
+				float:left;
+			}
+			.one div{
+				width:260px;
+				height:160px;
+				background:grey;
+				display: inline-block;
+				float:left;
+				
+				padding:20px;
+				color:white;
+			}
+			#second{
+				position:absolute;
+				left:553px;
+				z-index: 2;
+			}
+			#three{
+				position:absolute;
+				left:806px;
+				z-index: 5;
 			}
 		</style>
+		<script src='js/jquery-3.1.0.min.js'></script>
 		<script>
-			window.onload=function(){
-				var box=document.querySelector("div");
-				var timerR;
-				var timerL;
-				var timerT;
-				var timerB;
-				var step=5;
-				//当点击键盘
-				document.onkeydown=function(ev){
-					//console.log(ev.keyCode);
-					//左：37 上：38  右：39 下：40
-					//按下左键
-					if(ev.keyCode==37){
-						clearInterval(timerL);
-						timerL=setInterval(function(){
-						box.style.left=box.offsetLeft-step+'px';
-						},15)
+			$(function(){
+				$('img').attr('on','true');
+				$('img').attr('canMove','true');
+				$('img').click(function(){
+					if($(this).attr('canMove')=='true'){
+						//往左运动
+						if($(this).attr('on')=='true'){
+							$(this).parent().animate({left:'-=300'});
+							$(this).attr('on','false');
+							
+							$(this).parent().prev().attr('canMove','false');
+							$(this).parent().next().attr('canMove','ture');
+							console.log($(this).attr('canMove'));
+							console.log($(this).parent().prev().attr('canMove'));
+						}
+						//往右边运动
+						else{
+							$(this).parent().animate({left:'+=300'});
+							$(this).attr('on','true');	
+							$(this).parent().next().attr('canMove','false');
+							$(this).parent().prev().attr('canMove','true');
+							
+						}
 					}
-					//按下右键
-					if(ev.keyCode==39){
-						clearInterval(timerR);
-						timerR=setInterval(function(){
-						box.style.left=box.offsetLeft+step+'px';
-						},15)
-					}
-					//按下上键
-					if(ev.keyCode==38){
-						clearInterval(timerT);
-						timerT=setInterval(function(){
-						box.style.top=box.offsetTop-step+'px';
-						},15)
-					}
-					//按下下键
-					if(ev.keyCode==40){
-						clearInterval(timerB);
-						timerB=setInterval(function(){
-						box.style.top=box.offsetTop+step+'px';
-						},15)
-					}
-				}
-				//当松开键盘
-				document.onkeyup=function(ev){
-					//松开左键
-					if(ev.keyCode==37){
-						clearInterval(timerL);
-					}
-					//松开上键
-					if(ev.keyCode==38){
-						clearInterval(timerT);
-					}
-					//松开右键
-					if(ev.keyCode==39){
-						clearInterval(timerR);
-					}
-					//松开下键
-					if(ev.keyCode==40){
-						clearInterval(timerB);
-					}
-				}
-			}
+						
+						
+					
+						
+					
+					
+				})
+				/*$('img').mouseout(function(){
+					$(this).attr('on','true');	
+					
+				})*/
+				
+			})
 		</script>
 	</head>
 	<body>
-		<div></div>
+		<div id='box'>
+			<div id='first' class='one'>
+				<img src='img/微信图片_20170423203913.jpg'/>
+				<div>
+					他叫做六加一，这个名字的由来是因为第一次上体育课，他穿了一件印有6+1的衣服，老师不知道名字，直接叫他六加一
+				</div>
+			</div>
+			<div id='second' class='one'>
+				<img src='img/微信图片_20170423203919.jpg'/>
+				<div>
+					我和他从高一认识到现在已经快七年了，一个腼腆，上进的家伙，虽然一直想找女朋友，但是现在还没有。
+				</div>
+			</div>
+			<div id='three' class='one'>
+				<img src='img/微信图片_20170423203936.jpg'/>
+				<div>
+					哈哈哈哈啊哈哈，我已经不知道写什么了。还有，你这张图片贼78丑，即使只是背影。
+				</div>
+			</div>
+		</div>
+		
+		
+		
 	</body>
 </html>
