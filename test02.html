@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="icon" href="img/favicon-20170504054256108.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="img/favicon-20170504054256108.ico" type="image/x-icon" />
+		<style>
+			html{
+				height: 100%;
+			}
+			body{
+				height: 100%;
+				margin: 0;
+			}
+			input[type="text"]{
+				border-radius:10px 10px 10px 10px;
+			}
+			#search{
+				margin:20px auto 0;
+				width:221px;
+			}
+			#result{
+				background:url(img/2013092022534466.gif) no-repeat center;
+				
+			}
+			#result ul{
+				list-style:none;
+				overflow: hidden;
+				background: #fff;
+				width:960px;
+				opacity: 1;
+				margin:0 auto;
+			}
+			
+			#result li{
+				width: 150px;
+				height: 225px;
+				padding: 10px;
+				border: 1px solid #ccc;
+				font-size: 12px;
+				color: green;
+				text-align: center;
+				float: left;
+				margin: 10px;
+			}
+		</style>
+		<script src='js/jsonp.js'></script>
+		<script>
+			window.onload=function(){
+				var inputs=document.querySelectorAll('input');
+				var result=document.getElementById('result');
+				var ul=result.querySelector('ul');
+				var str='';
+				inputs[1].onclick=function(){
+					var val=encodeURI(inputs[0].value);
+					if(!val){
+						alert('请输入内容');
+						return;
+					}
+					result.style.height="100%";
+					ul.innerHTML=str;
+					jsonp({
+						url:'https://api.douban.com/v2/movie/search',
+						data:{
+							q:val,
+							start:0
+						},
+						succ:function(data){
+							console.log(data);
+							creatDom(data);
+						}
+					});
+					
+					function creatDom(data){
+						var str='';
+						for(var i=0;i<data.subjects.length;i++){
+							str+=`<li>
+									<a href="${data.subjects[i].alt}" target='_black'>
+										<img src="${data.subjects[i].images.medium}" alt="" />
+									</a>
+									<p>${data.subjects[i].title}</p>
+									<p>${data.subjects[i].year}</p>
+									<p>${data.subjects[i].genres.join(' ')}</p>
+								</li>`;
+						}
+						
+						ul.innerHTML=str;
+						result.style.height=0;
+					};
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="search">
+			<input type="text" placeholder="请输入电影名字"/>
+			<input type="button" value="搜索">
+		</div>
+		<div id="result">
+			<ul>
+				<!--<li>
+					<a href="${data.subjects[i].alt}">
+						<img src="${data.subjects[i].images.large}" alt="" />
+					</a>
+					<p>${data.subjects[i].title}</p>
+					<p>${data.subjects[i].year}</p>
+					<p>${data.subjects[i].genres.join(' ')}</p>
+				</li>-->
+				
+			</ul>
+		</div>
+	</body>
+</html>
